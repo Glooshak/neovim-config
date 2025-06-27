@@ -64,6 +64,9 @@ return {
 
         opts.desc = "Restart LSP"
         keymap.set("n", "<leader>rs", ":LspRestart<CR>", opts) -- mapping to restart lsp if necessary
+
+        opts.desc = "Show file structure (document symbols)"
+        keymap.set("n", "go", "<cmd>Telescope lsp_document_symbols<CR>", opts)
       end,
     })
 
@@ -78,29 +81,24 @@ return {
       vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
     end
 
-    mason_lspconfig.setup_handlers({
-      -- default handler for installed servers
-      function(server_name)
-        lspconfig[server_name].setup({
-          capabilities = capabilities,
-        })
-      end,
-      ["pyright"] = function()
-        -- configure pyright server
-        lspconfig.pyright.setup({
-          capabilities = capabilities,
-          settings = {
-            pyright = {
-              disableOrganizeImports = false,
-              analysis = {
-                useLibraryCodeForTypes = true,
-                diagnosticMode = "workspace",
-                typeCheckingMode = "basic",
-              },
-            },
+    -- instruction from the youtube video does not work, so I found this solution:
+    -- https://github.com/mason-org/mason-lspconfig.nvim/issues/545
+    -- https://github.com/ganiulis/dotfiles/commit/4721c811e2d6ba0ce336172f7cda79802c256125
+    lspconfig.pyright.setup({
+      capabilities = capabilities,
+      settings = {
+        pyright = {
+          disableOrganizeImports = false,
+          analysis = {
+            useLibraryCodeForTypes = true,
+            diagnosticMode = "workspace",
+            typeCheckingMode = "basic",
           },
-        })
-      end,
+        },
+      },
     })
+
+    require("mason-lspconfig").setup()
+
   end,
 }
