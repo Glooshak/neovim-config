@@ -64,8 +64,6 @@ return {
         opts.desc = "Restart LSP"
         keymap.set("n", "<leader>rs", ":LspRestart<CR>", opts) -- mapping to restart lsp if necessary
 
-        opts.desc = "Show file structure (document symbols)"
-        keymap.set("n", "go", "<cmd>Telescope lsp_document_symbols<CR>", opts)
       end,
     })
 
