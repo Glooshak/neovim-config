@@ -9,6 +9,26 @@ return {
   config = function()
     local telescope = require("telescope")
     local actions = require("telescope.actions")
+    local action_state = require("telescope.actions.state")
+
+
+    local function delete_buf(prompt_bufnr)
+      local picker = action_state.get_current_picker(prompt_bufnr)
+      local multi_selections = picker:get_multi_selection()
+
+      if next(multi_selections) == nil then
+        -- Single selection case
+        local selection = action_state.get_selected_entry()
+        vim.api.nvim_buf_delete(selection.bufnr, {force = true})
+        actions.close(prompt_bufnr)
+      else
+        -- Multi selection case
+        actions.close(prompt_bufnr)
+        for _, entry in ipairs(multi_selections) do
+          vim.api.nvim_buf_delete(entry.bufnr, {force = true})
+        end
+      end
+    end
 
     telescope.setup({
       pickers = {
@@ -34,6 +54,7 @@ return {
             ["<C-k>"] = actions.move_selection_previous, -- move to prev result
             ["<C-j>"] = actions.move_selection_next, -- move to next result
             ["<C-q>"] = actions.send_selected_to_qflist + actions.open_qflist,
+            ["<C-d>"] = delete_buf,
           },
         },
       },
@@ -48,6 +69,7 @@ return {
     keymap.set("n", "<leader>fr", "<cmd>Telescope oldfiles<cr>", { desc = "Fuzzy find recent files" })
     keymap.set("n", "<leader>fs", "<cmd>Telescope live_grep<cr>", { desc = "Find string in cwd" })
     keymap.set("n", "<leader>fc", "<cmd>Telescope grep_string<cr>", { desc = "Find string under cursor in cwd" })
-    keymap.set('n', '<leader>fo', ':Telescope lsp_document_symbols<CR>', { desc = '[F]ile [S]tructure' })
+    keymap.set("n", "<leader>fo", ":Telescope lsp_document_symbols<CR>", { desc = "[F]ile [S]tructure" })
+    keymap.set("n", "<leader>fb", ":Telescope buffers<CR>", { desc = "Lists open buffers in current neovim instance" })
   end,
 }
