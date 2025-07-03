@@ -36,16 +36,19 @@ return {
           hidden = true,
           no_ignore = true,
         },
-      live_grep = {
-        additional_args = function(opts)
-          return {"--hidden", "--no-ignore"}
-        end
-      },
-      grep_string = {
-        additional_args = function(opts)
-          return {"--hidden", "--no-ignore"}
-        end
-      },
+        live_grep = {
+          additional_args = function(opts)
+            return {"--hidden", "--no-ignore"}
+          end
+        },
+        grep_string = {
+          additional_args = function(opts)
+            return {"--hidden", "--no-ignore"}
+          end
+        },
+        buffers = {
+          sort_lastused = true,
+        }
       },
       defaults = {
         path_display = { "smart" },
