@@ -7,7 +7,7 @@ return {
   },
   opts = {
     outline_window = {
-      width=13,
+      width=30,
       auto_jump = true,
       show_numbers = true,
       show_relative_numbers = true,
