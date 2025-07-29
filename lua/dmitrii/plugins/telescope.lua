@@ -51,6 +51,12 @@ return {
         }
       },
       defaults = {
+        layout_config = {
+          horizontal = {
+            preview_width = 0.6,
+            width = 0.95,
+          },
+        },
         path_display = { "smart" },
         mappings = {
           i = {
